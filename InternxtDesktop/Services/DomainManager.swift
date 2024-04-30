@@ -43,49 +43,11 @@ struct DomainManager {
         self.managerDomain = domain
         self.logger.info("📦 FileProvider domain is ready with identifier \(identifier.rawValue )")
         return
-        /*
-        let firstDomain = domains.first
-        let noDomain = firstDomain == nil
-        
-        
-        if noDomain {
-            self.logger.info("No domain was found, adding one")
-            try await NSFileProviderManager.add(newDomain)
-            self.logger.info("Domain added successfully")
-            self.manager = NSFileProviderManager(for: newDomain)
-            self.managerDomain = newDomain
-        }
-        
-        if let loadedDomain = firstDomain {
-            
-        
-            if self.resetDomainOnStart {
-                self.logger.info("Resetting domain on start")
-                if #available(macOS 12.0, *) {
-                    try await NSFileProviderManager.remove(loadedDomain, mode: .removeAll)
-                } else {
-                    try await NSFileProviderManager.remove(loadedDomain)
-                }
-                self.logger.info("Domain removed")
-                
-                self.logger.info("Domain added successfully")
-                self.manager = NSFileProviderManager(for: newDomain)
-                self.managerDomain = newDomain
-            } else {
-                try await NSFileProviderManager.add(loadedDomain)
-                self.logger.info("Domain added successfully")
-                self.manager = NSFileProviderManager(for: loadedDomain)
-                self.managerDomain = loadedDomain
-            }
-            
-        }*/
     }
     
-    mutating func exitDomain() async throws {
-        if let domain = self.managerDomain {
-            try await NSFileProviderManager.remove(domain)
-        }
+    mutating func exitDomain() async {
         self.manager = nil
         self.managerDomain = nil
+        try? await NSFileProviderManager.removeAllDomains()
     }
 }

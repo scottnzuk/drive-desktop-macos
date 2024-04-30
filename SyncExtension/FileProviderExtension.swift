@@ -154,6 +154,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NSFile
 
     
     func invalidate() {
+        
         fileProviderItemActions.clean()
         self.refreshTokensIntervalTimer.cancel()
         self.signalEnumeratorIntervalTimer.cancel()

@@ -119,16 +119,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func application(_ application: NSApplication, open urls: [URL]) {
         if let url = urls.first {
-            do {
-                let success = try authManager.handleSignInDeeplink(url: url)
+            Task {
                 
-                if success == true {
-                    NSApp.activate(ignoringOtherApps: true)
-                    self.windowsManager.closeWindow(id: "auth")
+                do {
+                    await domainManager.exitDomain()
+                    let success = try authManager.handleSignInDeeplink(url: url)
+                    if success == true {
+                        
+                        NSApp.activate(ignoringOtherApps: true)
+                        self.windowsManager.closeWindow(id: "auth")
+                    }
+                } catch {
+                    error.reportToSentry()
                 }
-            } catch {
-                error.reportToSentry()
             }
+            
             
         }
         
@@ -298,11 +303,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         
         Task {
-            do {
-                try await domainManager.exitDomain()
-            } catch {
-                error.reportToSentry()
-            }
+            await domainManager.exitDomain()
         }
         
     }
