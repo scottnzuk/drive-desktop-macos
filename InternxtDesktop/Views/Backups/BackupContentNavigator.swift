@@ -172,15 +172,12 @@ struct BackupContentNavigator: View {
             guard let url = panel.url else {
                 return
             }
-            print(url)
-            print(selectedId ?? "")
-            print(currentFolderId ?? "")
-            guard let selectedId = Int(selectedId ?? "0") else { return }
+
+            guard let selectedId = selectedId else { return }
             guard let currentFolderId = Int(currentFolderId ?? "0") else { return  }
             Task {
                 do {
-                    try await backupsService.downloadBackupFile(device: device, downloadAt: url, fileId: "664e0286a04648000881a247")
-//                    try await backupsService.downloadBackup(device: device, downloadAt: url, folderId: selectedId)
+                    try await backupsService.downloadBackupFile(device: device, downloadAt: url, fileId: selectedId)
                 } catch {
                     print(error)
                 }
