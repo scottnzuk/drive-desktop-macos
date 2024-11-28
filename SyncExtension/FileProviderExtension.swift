@@ -209,20 +209,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NSFile
         
         func internalCompletionHandler(url: URL?, item: NSFileProviderItem?, error: Error?) -> Void {
             
-            if let nsError = error as NSError?, nsError.domain == NSFileProviderErrorDomain {
-                logger.error("Error file \(itemIdentifier.rawValue): \(nsError), code: \(nsError.code)")
-                
-                if nsError.code == NSFileProviderError.cannotSynchronize.rawValue {
-                    logger.error("❌ Error cannotSynchronize at file \(itemIdentifier.rawValue).")
-                 
-                    completionHandler(nil, item, nil)
-                } else {
-                    logger.error("Error at file \(itemIdentifier.rawValue): \(error?.localizedDescription ?? "Unknow Error")")
-                    completionHandler(nil, item, error)
-                }
-            } else {
-                completionHandler(url, item, nil)
-            }
+            completionHandler(url, item, error)
             do {
                 try FileManager.default.removeItem(at: encryptedFileDestinationURL)
             } catch {
@@ -231,6 +218,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NSFile
             }
             
         }
+        
         return DownloadFileUseCase(
             networkFacade: networkFacade,
             user: user,
@@ -405,11 +393,11 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NSFile
             return Progress()
         }
         
-//        if lastUsedDateHasChanged {
-//            logger.info("File last use date has changed, let it pass")
-//            completionHandler(item, [], false, nil)
-//            return Progress()
-//        }
+        if lastUsedDateHasChanged {
+            logger.info("File last use date has changed, let it pass")
+            completionHandler(item, [], false, nil)
+            return Progress()
+        }
                 
         logger.info("Item modification wasn't handled if this message appear: item -> \(item.filename)")
         return Progress()

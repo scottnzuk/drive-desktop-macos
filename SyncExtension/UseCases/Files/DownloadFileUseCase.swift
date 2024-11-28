@@ -8,6 +8,7 @@
 import Foundation
 import FileProvider
 import InternxtSwiftCore
+import RealmSwift
 
 
 enum DownloadFileUseCaseError: Error {
@@ -163,14 +164,17 @@ struct DownloadFileUseCase {
                 completionHandler(decryptedFileURL, fileProviderItem , nil)
 
                 progressHandler(completedProgress: 1)
-                activityManager.saveActivityEntry(entry: ActivityEntry(filename: filename, kind: .download, status: .finished))
+                let uuidString = fileProviderItem.itemIdentifier.rawValue.replacingOccurrences(of: "-", with: "").prefix(24)
+                let objectId = try ObjectId(string: String(uuidString))
+                activityManager.saveActivityEntry(entry: ActivityEntry(_id: objectId, filename: filename, kind: .download, status: .finished))
+
                 self.logger.info("✅ Downloaded and decrypted file correctly with identifier \(itemIdentifier.rawValue)")
             } catch {
                 if let driveFileUnwrapped = driveFile {
                     trackError(driveFile: driveFileUnwrapped, processIdentifier: driveFileUnwrapped.uuid, error: error)
                 }
                 error.reportToSentry()
-                self.logger.error("❌ Failed to fetch file content for file with identifier \(itemIdentifier.rawValue): \(self.getErrorDescription(error: error))")
+                self.logger.error("❌ Failed to fetch file content for file with identifier \(itemIdentifier.rawValue): \(error.getErrorDescription())")
                 
                 completionHandler(nil, nil, NSError(domain: NSFileProviderErrorDomain, code: NSFileProviderError.cannotSynchronize.rawValue))
             }
@@ -179,11 +183,4 @@ struct DownloadFileUseCase {
         return progress
     }
     
-    private func getErrorDescription(error: Error) -> String {
-        if let apiClientError = error as? APIClientError {
-            let responseBody = String(decoding: apiClientError.responseBody, as: UTF8.self)
-            return "APIClientError \(apiClientError.statusCode) - \(responseBody)"
-        }
-        return error.localizedDescription
-    }
 }

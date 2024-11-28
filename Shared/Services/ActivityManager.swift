@@ -110,11 +110,13 @@ class ActivityEntry: Object {
     @Persisted var status: ActivityEntryStatus
     
     convenience init(
+        _id: ObjectId? = nil,
         filename: String,
         kind: ActivityEntryOperationKind,
         status: ActivityEntryStatus
     ) {
         self.init()
+        self._id = _id ?? ObjectId.generate()
         self.filename = filename
         self.createdAt = Date()
         self.kind = kind
@@ -142,3 +144,4 @@ enum ActivityEntryStatus: String, PersistableEnum {
     case finished
     case inProgress
 }
+
