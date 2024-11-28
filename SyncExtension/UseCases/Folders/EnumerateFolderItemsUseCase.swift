@@ -138,7 +138,7 @@ struct EnumerateFolderItemsUseCase {
                 
             } catch {
                 error.reportToSentry()
-                self.logger.error("❌ Got error fetching folder content: \(error)")
+                self.logger.error("❌ Got error fetching folder content: \(error.getErrorDescription())")
                 observer.finishEnumeratingWithError(error)
             }
         }

@@ -61,7 +61,7 @@ struct GetFolderMetaUseCase {
                 self.logger.info("✅ Got metadata for folder with name \(folderMeta.plainName ?? folderMeta.name)")
             } catch {
                 error.reportToSentry()
-                self.logger.error("❌ Failed to get folder meta for \(identifier.rawValue): \(error.localizedDescription)")
+                self.logger.error("❌ Failed to get folder meta for \(identifier.rawValue): \(error.getErrorDescription())")
                 completionHandler(nil, NSError(domain: NSFileProviderErrorDomain, code: NSFileProviderError.serverUnreachable.rawValue))
             }
         }

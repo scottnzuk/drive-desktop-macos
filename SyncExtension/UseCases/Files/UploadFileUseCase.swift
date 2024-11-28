@@ -218,7 +218,7 @@ struct UploadFileUseCase {
                 self.trackError(processIdentifier: trackId, error: error)
                 error.reportToSentry()
 
-                self.logger.error("❌ Failed to create file: \(error.localizedDescription)")
+                self.logger.error("❌ Failed to create file: \(error.getErrorDescription())")
                 completionHandler(nil, [], false, NSError(domain: NSFileProviderErrorDomain, code: NSFileProviderError.serverUnreachable.rawValue))
             }
         }

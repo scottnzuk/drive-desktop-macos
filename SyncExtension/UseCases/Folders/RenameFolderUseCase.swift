@@ -51,12 +51,12 @@ struct RenameFolderUseCase {
                     if statusCode == 409 {
                         completionHandler(newItem, [], false, nil)
                     } else {
-                        self.logger.error("❌ Failed to rename folder: \(error.localizedDescription)")
+                        self.logger.error("❌ Failed to rename folder: \(error.getErrorDescription())")
                         completionHandler(nil, [], false, NSError(domain: NSFileProviderErrorDomain, code: NSFileProviderError.serverUnreachable.rawValue))
                     }
                    
                 } else {
-                    self.logger.error("❌ Failed to rename folder: \(error.localizedDescription)")
+                    self.logger.error("❌ Failed to rename folder: \(error.getErrorDescription())")
                     completionHandler(nil, [], false,  NSError(domain: NSFileProviderErrorDomain, code: NSFileProviderError.serverUnreachable.rawValue))
                 }
                 

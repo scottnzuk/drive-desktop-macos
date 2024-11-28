@@ -40,7 +40,7 @@ struct TrashFileUseCase {
                 
             } catch {
                 error.reportToSentry()
-                self.logger.error("❌ Failed to trash file: \(error.localizedDescription)")
+                self.logger.error("❌ Failed to trash file: \(error.getErrorDescription())")
                 completionHandler(nil, [], false, NSError(domain: NSFileProviderErrorDomain, code: NSFileProviderError.serverUnreachable.rawValue))
             }
         }

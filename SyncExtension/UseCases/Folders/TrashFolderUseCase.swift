@@ -65,7 +65,7 @@ struct TrashFolderUseCase {
                 
             } catch {
                 error.reportToSentry()
-                self.logger.error("❌ Failed to trash folder: \(error.localizedDescription)")
+                self.logger.error("❌ Failed to trash folder: \(error.getErrorDescription())")
                 completionHandler(nil, [], false, NSError(domain: NSFileProviderErrorDomain, code: NSFileProviderError.serverUnreachable.rawValue))
             }
         }

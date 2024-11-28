@@ -43,7 +43,7 @@ struct RenameFileUseCase {
                 completionHandler(updatedDriveFile.fileProviderItem, changedFields.removing(.filename), false, nil)
             } catch {
                 error.reportToSentry()
-                self.logger.error("❌ Failed to rename file: \(error.localizedDescription)")
+                self.logger.error("❌ Failed to rename file: \(error.getErrorDescription())")
                 completionHandler(nil, [], false,  NSError(domain: NSFileProviderErrorDomain, code: NSFileProviderError.serverUnreachable.rawValue))
                 
             }

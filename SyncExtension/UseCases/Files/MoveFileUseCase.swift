@@ -61,7 +61,7 @@ struct MoveFileUseCase {
                 self.logger.info("✅ File moved successfully")
             } catch {
                 error.reportToSentry()
-                self.logger.error("❌ Failed to move file: \(error.localizedDescription)")
+                self.logger.error("❌ Failed to move file: \(error.getErrorDescription())")
                 completionHandler(nil, [], false,  NSError(domain: NSFileProviderErrorDomain, code: NSFileProviderError.serverUnreachable.rawValue))
                 
             }
