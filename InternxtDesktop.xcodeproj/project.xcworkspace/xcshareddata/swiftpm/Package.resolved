@@ -1,4 +1,5 @@
 {
+  "originHash" : "c6189e930f7981170b18cd77a341ede077498747a25b08be829bc4beb44abce1",
   "pins" : [
     {
       "identity" : "idzswiftcommoncrypto",
@@ -86,8 +87,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/internxt/swift-core",
       "state" : {
-        "branch" : "main",
-        "revision" : "8a9eee24a9ec8b6650cdfd290530fc8f438fe712"
+        "branch" : "feature/workspaces",
+        "revision" : "7c18c56a2d2c64ccd2a30df6482e44bf1680927c"
       }
     },
     {
@@ -100,5 +101,5 @@
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }
