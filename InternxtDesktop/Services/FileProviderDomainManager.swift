@@ -20,7 +20,9 @@ enum FileProviderDomainStatus {
 class FileProviderDomainManager: ObservableObject {
     let logger = LogService.shared.createLogger(subsystem: .InternxtDesktop, category: "DomainManager")
     lazy var manager: NSFileProviderManager? = nil
+    lazy var managerWorkspace: NSFileProviderManager? = nil
     var managerDomain: NSFileProviderDomain? = nil
+    var managerDomainWorkspace: NSFileProviderDomain? = nil
     @Published var domainStatus: FileProviderDomainStatus = .Idle
     
     private func getDomains() async throws -> [NSFileProviderDomain] {
@@ -59,6 +61,8 @@ class FileProviderDomainManager: ObservableObject {
         }
         self.manager = nil
         self.managerDomain = nil
+        self.managerWorkspace = nil
+        self.managerDomainWorkspace = nil
         try? await NSFileProviderManager.removeAllDomains()
     }
     
@@ -74,9 +78,9 @@ class FileProviderDomainManager: ObservableObject {
             if !workspaces.isEmpty{
                 let identifier = NSFileProviderDomainIdentifier(rawValue: workspaces[0].workspaceUser.workspaceId)
                 let domain = NSFileProviderDomain(identifier: identifier, displayName: "Internxt Business")
-                
                 try await NSFileProviderManager.add(domain)
-                
+                self.managerWorkspace = NSFileProviderManager(for: domain)
+                self.managerDomainWorkspace = domain
                 self.logger.info("📦 FileProvider domain workspace is ready with identifier \(identifier.rawValue)")
             }
         
