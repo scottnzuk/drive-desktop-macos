@@ -239,8 +239,8 @@ public struct ConfigLoader {
 
     public func onboardingIsCompleted() -> Bool {
         let completed = self.getFromUserDefaults(key: "OnboardingIsCompleted")
-
-        return completed == "1"
+        return false
+        //return completed == "1"
     }
 
     public func shouldShowBackupsBanner() -> Bool {
