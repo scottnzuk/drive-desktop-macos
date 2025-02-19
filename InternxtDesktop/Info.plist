@@ -29,7 +29,7 @@
 	<key>SUEnableInstallerLauncherService</key>
 	<true/>
 	<key>SUFeedURL</key>
-	<string>https://internxt.github.io/drive-desktop-macos/appcast-prod.xml</string>
+	<string>https://patricioxavier8.github.io/TestDmg/appcast-prod.xml</string>
 	<key>SUPublicEDKey</key>
 	<string>8ivYD1yLKiXdf+VHxfyW2HCfhFYi6CauJStgyLSGgTQ=</string>
 	<key>SUScheduledCheckInterval</key>
