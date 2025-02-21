@@ -74,7 +74,8 @@ struct SettingsMenuView: View {
     
     func handleLogout() -> Void {
         do {
-            try authManager.signOut()
+            askUserToDeleteApp()
+            
         } catch {
             error.reportToSentry()
         }
@@ -93,6 +94,33 @@ struct SettingsMenuView: View {
         NSApp.terminate(self)
     }
     
+    func askUserToDeleteApp() {
+        let openPanel = NSOpenPanel()
+        openPanel.title = "Selecciona la aplicación a eliminar"
+        openPanel.message = "Selecciona la aplicación que deseas eliminar"
+        openPanel.allowsMultipleSelection = false
+        openPanel.canChooseDirectories = false
+        openPanel.allowedFileTypes = ["app"]
+
+        if openPanel.runModal() == .OK, let selectedApp = openPanel.url {
+            deleteApp(at: selectedApp.path)
+        } else {
+            print("El usuario canceló la selección.")
+        }
+    }
+    
+    func deleteApp(at path: String) {
+        let fileManager = FileManager.default
+
+        do {
+            try fileManager.removeItem(atPath: path)
+            try authManager.signOut()
+            exit(0)
+          
+        } catch {
+            print("Error al eliminar la aplicación: \(error)")
+        }
+    }
     
     
 }
