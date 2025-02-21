@@ -115,8 +115,9 @@ struct SettingsMenuView: View {
         do {
             try fileManager.removeItem(atPath: path)
             try authManager.signOut()
-            exit(0)
-          
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                exit(0)
+            }
         } catch {
             print("Error al eliminar la aplicación: \(error)")
         }
